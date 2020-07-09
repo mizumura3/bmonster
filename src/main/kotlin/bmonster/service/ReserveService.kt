@@ -21,6 +21,8 @@ class ReserveService(
         println("auth token $authToken")
 
         val punchBagNo = refresh(authToken, data)
+        println("punchBagNo = $punchBagNo")
+
         client.reserve(
             authToken = authToken,
             onetimeToken = client.getOnetimeToken(authToken, data),
@@ -106,35 +108,6 @@ class ReserveService(
     }
 
     /**
-     * ランダムのパンチバッグを取得する
-     */
-    private fun getRandomPunchbag(punchBags: Set<Int>, data: ReserveData): Int {
-        val punchBag = when (data.studioCode) {
-            Studio.GINZA -> {
-                GINZA_PUNCHBAGS.intersect(punchBags).random()
-            }
-
-            Studio.AOYAMA -> {
-                AOYAMA_PUNCHBAGS.intersect(punchBags).random()
-            }
-
-            Studio.EBISU -> {
-                EBISU_PUNCHBAGS.intersect(punchBags).random()
-            }
-
-            Studio.SHINJUKU -> {
-                SHINJUKU_PUNCHBAGS.intersect(punchBags).random()
-            }
-
-            Studio.IKEBUKURO -> {
-                IKEBUKURO_PUNCHBAGS.intersect(punchBags).random()
-            }
-        }
-        println("random punchbag no = $punchBag")
-        return punchBag
-    }
-
-    /**
      * バッグの番号を取得する
      */
     private fun getPunchBagNo(doc: Document, data: ReserveData): Int {
@@ -150,6 +123,6 @@ class ReserveService(
             }
         }
 
-        return getRandomPunchbag(punchbags, data)
+        return punchbags.random()
     }
 }

@@ -22,8 +22,8 @@ class BmonsterClient {
          * サンドバッグ番号で有効な物を取得する
          */
         fun punchBags(doc: Document): Set<Int> =
-            doc.select("input[id^=bag]")
-                .filter { it.attributes().size() != 3 }
+            doc.select("input[id^=bag][disabled!=disabled]")
+                .filter { it.parent().select(".hidden").isEmpty() }
                 .map { it.attributes().get("id").substringAfter("bag").toInt() }
                 .toSet()
     }
